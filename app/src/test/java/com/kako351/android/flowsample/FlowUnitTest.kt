@@ -1,5 +1,6 @@
 package com.kako351.android.flowsample
 
+import android.util.Log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
@@ -62,6 +63,22 @@ class FlowUnitTest {
 
 
             Assert.assertTrue(repository.getCount() == 2)
+        }
+    }
+
+    @Test
+    fun debounceTestLog() {
+        runBlockingTest {
+            flow {
+                emit(println("1"))
+                emit(println("2"))
+                delay(10)
+                emit(println("3"))
+                delay(1001)
+                emit(println("4"))
+            }
+            .debounce(1000)
+            .collect()
         }
     }
 }
